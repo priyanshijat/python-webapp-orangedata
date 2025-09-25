@@ -1,0 +1,43 @@
+name: Python application
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+      id-token: write
+      contents: read
+
+env:
+  AZURE_WEBAPP_NAME: my-flask-app # Set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.' # Set this to the path to your web app project, defaults to the repository root
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: azure/login@v2
+      with:
+        client-id: 70a16a64-9354-4f43-9707-8ad6031a3ebf
+        tenant-id: efc2e74d-a10b-4331-985d-20d0d0f9835c
+        subscription-id: a7f882dc-8ebf-4984-b204-4f6fbf33e386
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Deploy web App using GH Action azure/webapps-deploy
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: my-flask-app
+        package: '.'
+    - name: logout
+      run: |
+        az logout
