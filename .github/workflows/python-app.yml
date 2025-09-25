@@ -21,9 +21,10 @@ jobs:
     
     - uses: azure/login@v2
       with:
-        client-id: 70a16a64-9354-4f43-9707-8ad6031a3ebf
-        tenant-id: efc2e74d-a10b-4331-985d-20d0d0f9835c
-        subscription-id: a7f882dc-8ebf-4984-b204-4f6fbf33e386
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
     - name: Set up Python 3.x
       uses: actions/setup-python@v4
